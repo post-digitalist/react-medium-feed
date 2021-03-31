@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const MediumFeed = ({ username, isPublication = false }) => {
+const MediumFeed = ({ username, isPublication = false, itemComponent }) => {
+  const ItemComponent = itemComponent;
   const [items, setItems] = useState([]);
   useEffect(async () => {
     const rss_url = isPublication
@@ -13,7 +14,13 @@ const MediumFeed = ({ username, isPublication = false }) => {
     setItems(feed.items);
   }, [username]);
 
-  return (
+  return ItemComponent ? (
+    <div>
+      {items.map((item, index) => (
+        <ItemComponent key={index} {...item} />
+      ))}
+    </div>
+  ) : (
     <div>
       <ul>
         {items.map((item, index) => (
